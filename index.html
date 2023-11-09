@@ -3,18 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To-Do App</title>
+    <title>Strengthening JavaScript: Notes App</title>
+    <link rel="stylesheet" href="styles.css">
     <script defer src="scripts.js"></script>
 </head>
 <body>
-    
-    <h1>To-Do App</h1>
-    <input type="text" id="todoFilter"><br />
-    <div id="todoContainer"></div>
-    <form>
-        <input type="text" name="addTodoInput" id="newTodo">
-        <button type="submit" id="addTodo">Add To-Do</button>
-    </form>
+
+    <header>
+        <h1>Strengthening JavaScript: Notes App</h1>
+        <div class="headerRightContainer">
+            <form id="headerForm">
+                <label for="filter" class="sr-only">Filter</label>
+                <input type="text" id="filter" placeholder="Search">
+
+                <label for="sorting" class="sr-only">Sort by</label>
+                <select id="sorting">
+                    <option value="dateA">Date Created (Ascending)</option>
+                    <option value="dateD">Date Created (Descending)</option>
+                    <option value="titleA">Title (A-Z)</option>
+                    <option value="titleZ">Title (Z-A)</option>
+                </select>
+            </form>
+        </div>
+    </header>
+
+    <main>
+        <!-- Notes List -->
+        <section class="notesListContainer">
+
+        </section>
+
+        <!-- Notes Creation-->
+        <section class="notesCreationContainer">
+            <h2>Add/Edit a Note</h2>
+            <form>
+                <label for="noteTitle" class="sr-only">Note Title</label>
+                <input type="text" id="noteTitle" placeholder="Note Title">
+
+                <label for="noteBody" class="sr-only">Note Body</label>
+                <textarea id="noteBody" rows="5" placeholder="Note Body"></textarea>
+
+                <input type="submit" value="Add/Edit Note">
+            </form>
+
+        </section>
+    </main>
 
 </body>
 </html>

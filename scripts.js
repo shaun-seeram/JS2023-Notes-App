@@ -1,77 +1,120 @@
-// const todos = [{
-//     text: "Order cat food",
-//     completed: false
-// }, {
-//     text: "Clean kitchen",
-//     completed: true
-// }, {
-//     text: "Buy food",
-//     completed: true
-// }, {
-//     text: "Do work",
-//     completed: false
-// }, {
-//     text: "Walk dog",
-//     completed: true
-// }]
+const notes = JSON.parse(localStorage.getItem("notes")) ?? [{
+    title: "Apple",
+    body: "Apple",
+    date: 2
+},{
+    title: "Banana",
+    body: "Banana",
+    date: 1
+}];
 
-const todos = JSON.parse(localStorage.getItem("todos")) ?? []
-
-const container = document.querySelector("#todoContainer");
-
-// Create summary message
-
-const summary = document.createElement("h2");
-
-const todosLeft = todos.reduce((cT, cV) => !cV.completed ? cT + 1 : cT, 0);
-
-summary.textContent = `You have ${todosLeft} todos left`;
-
-container.appendChild(summary);
-
-// Live filter notes
-
-const filter = {
-    text: ""
+const filters = {
+    text: "",
+    sort: "dateA"
 }
 
-const filterTodos = () => {
+const notesSection = document.querySelector(".notesListContainer");
 
-    const notes = document.querySelectorAll("p").forEach((p) => {
-        p.remove();
-    })
+const renderNotes = () => {
 
-    const filtered = todos.filter((todo) => {
-        return todo.text.toLowerCase().includes(filter.text)
-    })
+    notesSection.innerHTML = "";
 
-    filtered.forEach((todo) => {
-        const p = document.createElement("p");
-        p.textContent = todo.text;
-        container.appendChild(p)
+    const filteredNotes = () => {
+
+        notes.sort((a, b) => {
+            if (filters.sort === "dateA") {
+                if (a.date > b.date) {
+                    return 1
+                } else if (a.date < b.date) {
+                    return -1
+                } else {
+                    return 0
+                }
+            } else if (filters.sort === "dateD") {
+                if (a.date > b.date) {
+                    return -1
+                } else if (a.date < b.date) {
+                    return 1
+                } else {
+                    return 0
+                }
+            } else if (filters.sort === "titleA") {
+                if (a.title > b.title) {
+                    return 1
+                } else if (a.title < b.title) {
+                    return -1
+                } else {
+                    return 0
+                }
+            } else if (filters.sort === "titleZ") {
+                if (a.title > b.title) {
+                    return -1
+                } else if (a.title < b.title) {
+                    return 1
+                } else {
+                    return 0
+                }
+            }
+        })
+
+        return notes.filter((note) => {
+            return note.title.toLowerCase().includes(filters.text.toLowerCase()) || note.body.toLowerCase().includes(filters.text.toLowerCase())
+        })
+    }
+
+    filteredNotes().forEach((note) => {
+        const container = document.createElement("div");
+        const noteTitle = document.createElement("p");
+        const noteText = document.createElement("p");
+        const noteFooter = document.createElement("div");
+        const noteDate = document.createElement("p");
+        const noteFooterR = document.createElement("div");
+        const editNote = document.createElement("button");
+        const deleteNote = document.createElement("button");
+
+        container.setAttribute("data-id", note.date);
+        container.classList.add("noteContainer");
+
+        noteTitle.textContent = note.title;
+        noteTitle.classList.add("noteTitle");
+
+        noteText.textContent = note.body;
+        noteText.classList.add("noteBody");
+
+        noteFooterR.appendChild(editNote);
+        noteFooterR.appendChild(deleteNote);
+
+        noteFooter.appendChild(noteDate);
+        noteFooter.appendChild(noteFooterR);
+
+        container.appendChild(noteTitle);
+        container.appendChild(noteText);
+        container.appendChild(noteFooter);
+
+        notesSection.appendChild(container);
     })
 }
 
-filterTodos()
+const filterInput = document.querySelector("#filter");
 
-// Todo Filter 
-
-document.querySelector("#todoFilter").addEventListener("input", (e) => {
-    filter.text = e.target.value.toLowerCase();
-    filterTodos()
+filterInput.addEventListener("input", (e) => {
+    filters.text = e.target.value;
+    renderNotes();
 })
 
-// Form Submit
-
-document.querySelector("form").addEventListener("submit", (e) => {
-    e.preventDefault();
-    const newTodoInput = document.querySelector("#newTodo");
-    todos.push({
-        text: e.target.elements.addTodoInput.value,
-        completed: false
-    })
-    localStorage.setItem("todos", JSON.stringify(todos))
-    newTodoInput.value = "";
-
-    filterTodos();
+filterInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+        e.preventDefault();
+    }
 })
+
+const sortInput = document.querySelector("#sorting");
+
+sortInput.addEventListener("change", (e) => {
+    filters.sort = e.target.value;
+    renderNotes();
+})
+
+
+document.querySelector("#headerForm").reset();
+renderNotes();
