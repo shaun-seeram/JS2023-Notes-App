@@ -4,14 +4,16 @@ const notes = JSON.parse(localStorage.getItem("notes")) ?? [{
     date: 2
 },{
     title: "Banana",
-    body: "Banana",
-    date: 1
+    body: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+    date: 1699915639025
 }];
 
 const filters = {
     text: "",
     sort: "dateA"
 }
+
+const monthArr = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
 const notesSection = document.querySelector(".notesListContainer");
 
@@ -63,6 +65,7 @@ const renderNotes = () => {
     }
 
     filteredNotes().forEach((note) => {
+        const date = new Date(note.date);
         const container = document.createElement("div");
         const noteTitle = document.createElement("p");
         const noteText = document.createElement("p");
@@ -81,11 +84,17 @@ const renderNotes = () => {
         noteText.textContent = note.body;
         noteText.classList.add("noteBody");
 
+        editNote.textContent = "Edit";
+        deleteNote.textContent = "Delete";
+
         noteFooterR.appendChild(editNote);
         noteFooterR.appendChild(deleteNote);
+        noteFooterR.classList.add("noteFooterR")
 
+        noteDate.textContent = `${monthArr[date.getMonth()]} ${date.getDay()}, ${date.getFullYear()}`
         noteFooter.appendChild(noteDate);
         noteFooter.appendChild(noteFooterR);
+        noteFooter.classList.add("noteFooter")
 
         container.appendChild(noteTitle);
         container.appendChild(noteText);

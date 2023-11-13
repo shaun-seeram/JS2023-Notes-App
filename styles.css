@@ -8,6 +8,11 @@ html { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: 
 
 .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; border: 0; padding: 0; white-space: nowrap; clip-path: inset(100%); clip: rect(0 0 0 0); overflow: hidden;}
 
+p, h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    padding: 0;
+}
+
 header {
     padding: 15px 10px;
     height: 50px;
@@ -33,7 +38,31 @@ main section {
 }
 
 .notesListContainer {
+    padding-left: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: flex-start;
+}
 
+.noteContainer {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    height: 150px;
+    border: 1px solid #cdcdcd;
+    border-radius: 5px;
+    padding: 10px 5px;
+}
+
+.noteTitle {
+    margin-bottom: 10px;
+}
+
+.noteBody {
+    font-size: 12px;
+    margin-bottom: 10px;
+    overflow: scroll;
 }
 
 .notesCreationContainer {
@@ -52,4 +81,18 @@ main section {
     margin-bottom: 10px;
 }
 
-.notesCreationContainer input[type="submit"] {}
+.noteFooter {
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.noteFooter p {
+    font-size: 12px;
+}
+
+.noteFooterR {
+    display: flex;
+    gap: 5px;
+}
