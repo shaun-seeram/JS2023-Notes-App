@@ -35,13 +35,16 @@
 
         <!-- Notes Creation-->
         <section class="notesCreationContainer">
-            <h2>Add/Edit a Note</h2>
-            <form>
+            <div class="addNoteHeader">
+                <h2>Add a Note</h2>
+                <button id="resetForm">R</button>
+            </div>
+            <form id="newNote" data-editing="">
                 <label for="noteTitle" class="sr-only">Note Title</label>
-                <input type="text" id="noteTitle" placeholder="Note Title">
+                <input type="text" name="noteTitle" id="noteTitle" placeholder="Note Title">
 
                 <label for="noteBody" class="sr-only">Note Body</label>
-                <textarea id="noteBody" rows="5" placeholder="Note Body"></textarea>
+                <textarea id="noteBody" name="noteBody" rows="5" placeholder="Note Body"></textarea>
 
                 <input type="submit" value="Add/Edit Note">
             </form>

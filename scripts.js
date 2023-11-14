@@ -1,12 +1,4 @@
-const notes = JSON.parse(localStorage.getItem("notes")) ?? [{
-    title: "Apple",
-    body: "Apple",
-    date: 2
-},{
-    title: "Banana",
-    body: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-    date: 1699915639025
-}];
+let notes = JSON.parse(localStorage.getItem("notes")) ?? [];
 
 const filters = {
     text: "",
@@ -16,6 +8,12 @@ const filters = {
 const monthArr = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
 const notesSection = document.querySelector(".notesListContainer");
+const filterInput = document.querySelector("#filter");
+const addNote = document.querySelector("#newNote");
+const editNoteTitle = document.querySelector("h2");
+const resetFormButton = document.querySelector("#resetForm");
+const sortInput = document.querySelector("#sorting");
+
 
 const renderNotes = () => {
 
@@ -59,9 +57,7 @@ const renderNotes = () => {
             }
         })
 
-        return notes.filter((note) => {
-            return note.title.toLowerCase().includes(filters.text.toLowerCase()) || note.body.toLowerCase().includes(filters.text.toLowerCase())
-        })
+        return notes.filter(note => note.title.toLowerCase().includes(filters.text.toLowerCase()) || note.body.toLowerCase().includes(filters.text.toLowerCase()))
     }
 
     filteredNotes().forEach((note) => {
@@ -87,6 +83,19 @@ const renderNotes = () => {
         editNote.textContent = "Edit";
         deleteNote.textContent = "Delete";
 
+        editNote.addEventListener("click", (e) => {
+            addNote.noteTitle.value = note.title;
+            addNote.noteBody.value = note.body;
+            addNote.dataset.editing = note.date;
+            editNoteTitle.textContent = "Editing Note"
+        })
+
+        deleteNote.addEventListener("click", () => {
+            notes = notes.filter(indNote => indNote.date !== note.date)
+            localStorage.setItem("notes", JSON.stringify(notes))
+            renderNotes();
+        })
+
         noteFooterR.appendChild(editNote);
         noteFooterR.appendChild(deleteNote);
         noteFooterR.classList.add("noteFooterR")
@@ -104,7 +113,27 @@ const renderNotes = () => {
     })
 }
 
-const filterInput = document.querySelector("#filter");
+addNote.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    if (e.target.dataset.editing !== "") {
+        const i = notes.findIndex(note => note.date === +e.target.dataset.editing)
+        notes[i].title = e.target.noteTitle.value;
+        notes[i].body = e.target.noteBody.value;
+    } else {
+        notes.push({
+            title: e.target.noteTitle.value,
+            body: e.target.noteBody.value,
+            date: new Date().getTime()
+        })
+    }
+
+    editNoteTitle.textContent = "Add a Note"
+    addNote.reset()
+    addNote.dataset.editing = "";
+    localStorage.setItem("notes", JSON.stringify(notes));
+    renderNotes();
+})
 
 filterInput.addEventListener("input", (e) => {
     filters.text = e.target.value;
@@ -117,13 +146,17 @@ filterInput.addEventListener("keydown", (e) => {
     }
 })
 
-const sortInput = document.querySelector("#sorting");
-
 sortInput.addEventListener("change", (e) => {
     filters.sort = e.target.value;
     renderNotes();
 })
 
+resetFormButton.addEventListener("click", () => {
+    editNoteTitle.textContent = "Add a Note"
+    addNote.reset()
+    addNote.dataset.editing = "";
+})
 
-document.querySelector("#headerForm").reset();
+
+document.querySelectorAll("form").forEach(form => form.reset());
 renderNotes();

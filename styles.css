@@ -96,3 +96,12 @@ main section {
     display: flex;
     gap: 5px;
 }
+
+.addNoteHeader {
+    display: flex;
+    justify-content: space-between;
+}
+
+.addNoteHeader button {
+    width: min-content;
+}
