@@ -1,3 +1,5 @@
+"use strict"
+
 // Define commonly used variables
 const filters = {
     text: "",
@@ -105,7 +107,7 @@ const renderNotes = () => {
 addNote.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    if (e.target.dataset.editing !== "") {
+    if (e.target.dataset.editing) {
         const i = notes.findIndex(note => note.date === +e.target.dataset.editing);
         notes[i].title = e.target.noteTitle.value;
         notes[i].body = e.target.noteBody.value;
